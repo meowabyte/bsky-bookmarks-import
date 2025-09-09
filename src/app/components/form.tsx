@@ -127,12 +127,15 @@ function Bookmarks({ setCanBack, setCanContinue }: FlowProps) {
       <h2>{importing ? `Importing bookmarks... ${imported}/${total} (${Math.round(100 * imported/total)}%)` : `Welcome, ${session.session?.handle}!`}</h2>
         {importing
             ? <Loader2 size={48} class="animate-spin" />
-            : <FilePicker
+            : <>
+              <FilePicker
                 width={200} height={200}
                 caption="Select backup file"
                 accept="application/json"
                 onChange={startImport}
-            />
+                />
+              <div>If you don't have a backup file, you can create one <a target="_blank" href="https://bookmarks.bluecanary.dev/export/">here</a>.</div>
+            </>
         }
     </div>
 }
