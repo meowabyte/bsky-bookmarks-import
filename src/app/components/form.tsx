@@ -109,7 +109,7 @@ function Bookmarks({ setCanBack, setCanContinue }: FlowProps) {
             const proxiedAgent = agent.withProxy("bsky_appview", "did:web:api.bsky.app")
             for (const p of validPosts) {
               setImported(v => v + 1)
-              await agent.app.bsky.bookmark.createBookmark({
+              await proxiedAgent.app.bsky.bookmark.createBookmark({
                 cid: p.cid, uri: p.uri
               })
             }
