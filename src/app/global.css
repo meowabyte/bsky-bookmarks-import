@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@theme {
+    --color-background: rgb(22, 30, 39);
+    --color-background-secondary: rgb(30, 41, 54);
+
+    --color-text: rgb(241, 243, 245);
+    --color-text-secondary: rgb(147, 165, 183);
+
+    --color-primary: rgb(32, 139, 254);
+}
+
+@layer base {
+    body {
+        @apply bg-background text-text;
+        font-family: "Inter Variable", system-ui;
+    }
+
+    h1, h2, h3 { @apply font-bold; }
+    h1 { @apply text-4xl; }
+    h2 { @apply text-3xl; }
+    h3 { @apply text-2xl; }
+
+    button {
+        @apply 
+            bg-primary px-5 py-2 text-sm rounded-full flex flex-row gap-1
+            disabled:text-black disabled:brightness-50
+            not-disabled:cursor-pointer not-disabled:hover:brightness-125;
+    }
+
+    a {
+        @apply
+            cursor-pointer
+            underline decoration-dotted decoration-2 underline-offset-8
+            hover:decoration-solid;
+    }
+}
