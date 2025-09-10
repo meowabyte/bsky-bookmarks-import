@@ -76,6 +76,8 @@ function AuthCheck({ authData, setCanBack, onBack, onNext }: FlowProps) {
 
 function Bookmarks({ setCanBack, setCanContinue }: FlowProps) {
     const [importing, setImporting] = useState(false)
+    const [imported, setImported] = useState(0)
+    const [total, setTotal] = useState(0)
 
     useEffect(() => {
         setCanBack(false)
@@ -91,7 +93,7 @@ function Bookmarks({ setCanBack, setCanContinue }: FlowProps) {
 
         const posts = await file.text()
             .then(t => JSON.parse(t).posts)
-        
+
         if (!posts || !Array.isArray(posts)) {
             alert("Invalid json file! No posts found!")
             return
@@ -99,10 +101,18 @@ function Bookmarks({ setCanBack, setCanContinue }: FlowProps) {
 
         const validPosts: { [k in "cid" | "uri"]: string }[] =
             posts.filter(p => typeof p.cid === "string" && typeof p.uri === "string")
+        setTotal(validPosts.length)
+        setImported(0)
 
         try {
             setImporting(true)
-            for (const p of validPosts) await agent.app.bsky.bookmark.createBookmark(p)
+            const proxiedAgent = agent.withProxy("bsky_appview", "did:web:api.bsky.app")
+            for (const p of validPosts) {
+              setImported(v => v + 1)
+              await proxiedAgent.app.bsky.bookmark.createBookmark({
+                cid: p.cid, uri: p.uri
+              })
+            }
             alert("Done! Thank you for using this tool! <3\nby meowabyte")
             location.href = "https://bsky.app/saved"
         }
@@ -114,15 +124,18 @@ function Bookmarks({ setCanBack, setCanContinue }: FlowProps) {
     }, [])
 
     return <div class="flex flex-col gap-5 items-center">
-        <h2>{importing ? "Importing bookmarks..." : `Welcome, ${session.session?.handle}!`}</h2>
+      <h2>{importing ? `Importing bookmarks... ${imported}/${total} (${Math.round(100 * imported/total)}%)` : `Welcome, ${session.session?.handle}!`}</h2>
         {importing
             ? <Loader2 size={48} class="animate-spin" />
-            : <FilePicker
+            : <>
+              <FilePicker
                 width={200} height={200}
                 caption="Select backup file"
                 accept="application/json"
                 onChange={startImport}
-            />
+                />
+              <div>If you don't have a backup file, you can create one <a target="_blank" href="https://bookmarks.bluecanary.dev/export/">here</a>.</div>
+            </>
         }
     </div>
 }
@@ -145,7 +158,7 @@ export default function Form() {
         setFormState(s => s - 1)
         setCanBack(true)
     }, [allowBack])
-    
+
     const onNext = useCallback((force?: boolean) => {
         if (!allowNext && !force) return;
         setFormState(s => s + 1)
@@ -153,7 +166,7 @@ export default function Form() {
     }, [allowNext])
 
     if (formState > FORM_FLOW.length - 1 || formState < 0) return;
-    
+
     const CurrentFlow = FORM_FLOW[formState]!
     return <div class="fixed inset-1/2 -translate-1/2 w-1/2 h-1/2 flex flex-col gap-5">
         <CurrentFlow

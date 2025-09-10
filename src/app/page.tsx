@@ -13,7 +13,7 @@ export default function Page() {
 
     // Disable hint
     useEffect(() => {
-        const timeout = setTimeout(() => setShowHint(true), 2000)
+        const timeout = setTimeout(() => setShowHint(true), 100)
         const onBodyClick = () => {
             clearTimeout(timeout)
             setShowHint(false)
@@ -39,7 +39,7 @@ export default function Page() {
                 easing: "ease-out",
                 fill: "forwards",
             })
-            
+
             transition.addEventListener("finish", () => setShowForm(true), { once: true })
         }
 
@@ -50,7 +50,7 @@ export default function Page() {
         }
     }, [bookmarkRef.current])
 
-    
+
     if (showForm) return <Form />
     return <div ref={teaserRef} class="fixed inset-1/2 -translate-1/2 h-max w-max text-center flex flex-col items-center gap-3">
         <div ref={bookmarkRef} class="cursor-pointer"><Bookmark size={64} /></div>
