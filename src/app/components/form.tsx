@@ -101,6 +101,9 @@ function Bookmarks({ setCanBack, setCanContinue }: FlowProps) {
 
         const validPosts: { [k in "cid" | "uri"]: string }[] =
             posts.filter(p => typeof p.cid === "string" && typeof p.uri === "string")
+                .toSorted((a, b) =>
+                    new Date(a.indexed_at).getTime() - new Date(b.indexed_at).getTime()
+                )
         setTotal(validPosts.length)
         setImported(0)
 
