@@ -1,7 +1,14 @@
 {
   "name": "bsky-bookmarks-merge",
-  "module": "src/index.ts",
+  "private": true,
   "license": "MIT",
+  "module": "src/index.ts",
+  "type": "module",
+  "packageManager": "bun@1.2.22+",
+  "scripts": {
+    "build": "bun build/",
+    "dev": "bun build/ --watch"
+  },
   "devDependencies": {
     "@minify-html/node": "^0.16.4",
     "@types/bun": "latest",
@@ -12,12 +19,6 @@
   "peerDependencies": {
     "typescript": "^5"
   },
-  "private": true,
-  "scripts": {
-    "build": "bun build/",
-    "dev": "bun build/ --watch"
-  },
-  "type": "module",
   "dependencies": {
     "@atproto/api": "^0.16.9",
     "@fontsource-variable/inter": "^5.2.6",
