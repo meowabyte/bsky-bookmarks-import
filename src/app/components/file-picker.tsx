@@ -3,21 +3,18 @@ import type { ComponentProps } from "preact";
 import { useRef } from "preact/hooks";
 
 type Props = ComponentProps<"input"> & {
-    width: number,
-    height: number,
     caption?: string
 }
-export default function FilePicker({ width, height, caption, ...props}: Props) {
+export default function FilePicker({ caption, ...props}: Props) {
     const fileRef = useRef<HTMLInputElement>(null)
 
     return <>
         <div
             onClick={() => fileRef.current?.click()}
-            style={{ "--height": `${height}px`, "--width": `${width}px` }}
-            class="w-[var(--width)] h-[var(--height)] bg-background-secondary text-text-secondary select-none flex flex-col justify-center items-center gap-3 border-primary border-dotted border-4 cursor-pointer"
+            class="w-full max-w-xs sm:w-[200px] h-[150px] sm:h-[200px] bg-background-secondary text-text-secondary select-none flex flex-col justify-center items-center gap-3 border-primary border-dotted border-4 cursor-pointer mx-auto"
         >
-            <Upload size={Math.round(Math.min(height, width) / 3)} />
-            <span>{caption ?? "Upload file here..."}</span>
+            <Upload size={48} class="sm:w-16 sm:h-16" />
+            <span class="text-xs sm:text-sm text-center px-2">{caption ?? "Upload file here..."}</span>
         </div>
         <input {...props} hidden ref={fileRef} type="file" />
     </>

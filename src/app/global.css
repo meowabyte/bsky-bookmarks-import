@@ -11,27 +11,99 @@
 }
 
 @layer base {
+    html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
     body {
         @apply bg-background text-text;
         font-family: "Inter Variable", system-ui;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 1rem;
+        box-sizing: border-box;
     }
 
     h1, h2, h3 { @apply font-bold; }
-    h1 { @apply text-4xl; }
-    h2 { @apply text-3xl; }
-    h3 { @apply text-2xl; }
+    h1 { @apply text-2xl sm:text-3xl lg:text-4xl; }
+    h2 { @apply text-xl sm:text-2xl lg:text-3xl; }
+    h3 { @apply text-lg sm:text-xl lg:text-2xl; }
 
     button {
-        @apply 
-            bg-primary px-5 py-2 text-sm rounded-full flex flex-row gap-1
+        @apply
+            bg-primary px-3 py-2 text-xs sm:text-sm rounded-full flex flex-row gap-1 items-center justify-center
             disabled:text-black disabled:brightness-50
-            not-disabled:cursor-pointer not-disabled:hover:brightness-125;
+            not-disabled:cursor-pointer not-disabled:hover:brightness-125
+            min-w-0 flex-shrink-0;
     }
 
     a {
         @apply
             cursor-pointer
-            underline decoration-dotted decoration-2 underline-offset-8
-            hover:decoration-solid;
+            underline decoration-dotted decoration-2 underline-offset-4 sm:underline-offset-8
+            hover:decoration-solid
+            break-words;
     }
+
+    #root, body > div {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+    }
+
+    .teaser-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: auto;
+        height: auto;
+    }
+
+    .form-container {
+        width: 100%;
+        max-width: 90vw;
+        max-height: 90vh;
+        padding: 1rem;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    @media (min-width: 640px) {
+        .form-container {
+            max-width: 75vw;
+            padding: 2rem;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .form-container {
+            max-width: 60vw;
+            padding: 3rem;
+        }
+    }
+
+    input, textarea {
+        @apply text-sm sm:text-base;
+        min-height: 44px;
+    }
+
+    button {
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+    }
+
+    .gap-8 { @apply gap-4 sm:gap-6 lg:gap-8; }
+    .gap-5 { @apply gap-3 sm:gap-4 lg:gap-5; }
+    .gap-4 { @apply gap-2 sm:gap-3 lg:gap-4; }
 }

@@ -52,8 +52,8 @@ export default function Page() {
 
 
     if (showForm) return <Form />
-    return <div ref={teaserRef} class="fixed inset-1/2 -translate-1/2 h-max w-max text-center flex flex-col items-center gap-3">
-        <div ref={bookmarkRef} class="cursor-pointer"><Bookmark size={64} /></div>
+    return <div ref={teaserRef} class="teaser-container text-center flex flex-col items-center gap-3">
+        <div ref={bookmarkRef} class="cursor-pointer self-center"><Bookmark size={64} /></div>
         <span class={cn("text-text-secondary", showHint ? "transition-opacity duration-700" : "opacity-0")}>(click to start importing)</span>
     </div>
 }

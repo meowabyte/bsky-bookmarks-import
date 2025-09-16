@@ -37,17 +37,17 @@ function Login({ setCanContinue, setAuthData }: FlowProps) {
             setAuthData({ username, password })
     }, [username, password])
 
-    return <div className="flex flex-col gap-8">
-        <div class="flex flex-col">
+    return <div className="flex flex-col gap-8 w-full">
+        <div class="flex flex-col gap-2">
             <h1>First we need to login!</h1>
-            <span>Just so we'll be able to import them on right account!</span>
-            <Warning><b>Do not worry!</b> Everything is done locally, no one has access to any of data you put here!</Warning>
+            <span class="text-sm sm:text-base">Just so we'll be able to import them on right account!</span>
+            <Warning><b>Do not worry!</b> Everything is done locally, no one has access to any data you put here!</Warning>
         </div>
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4 w-full">
             <Input onInput={e => setUsername(e.currentTarget.value)} title="Username" />
-            <div class="flex flex-col">
+            <div class="flex flex-col gap-1">
                 <Input onInput={e => setPassword(e.currentTarget.value)} type="password" title="App Password" />
-                <a target="_blank" href="https://bsky.app/settings/app-passwords" class="text-text-secondary">Create App Password</a>
+                <a target="_blank" href="https://bsky.app/settings/app-passwords" class="text-text-secondary text-sm">Create App Password</a>
             </div>
         </div>
     </div>
@@ -130,18 +130,17 @@ function Bookmarks({ setCanBack, setCanContinue }: FlowProps) {
         }
     }, [])
 
-    return <div class="flex flex-col gap-5 items-center">
-      <h2>{importing ? `Importing bookmarks... ${imported}/${total} (${Math.round(100 * imported/total)}%)` : `Welcome, ${session.session?.handle}!`}</h2>
+    return <div class="flex flex-col gap-5 items-center w-full">
+      <h2 class="text-center break-words">{importing ? `Importing bookmarks... ${imported}/${total} (${Math.round(100 * imported/total)}%)` : `Welcome, ${session.session?.handle}!`}</h2>
         {importing
             ? <Loader2 size={48} class="animate-spin" />
             : <>
               <FilePicker
-                width={200} height={200}
                 caption="Select backup file"
                 accept="application/json"
                 onChange={startImport}
                 />
-              <div>If you don't have a backup file, you can create one <a target="_blank" href="https://bookmarks.bluecanary.dev/export/">here</a>.</div>
+              <div class="text-center text-sm sm:text-base">If you don't have a backup file, you can create one <a target="_blank" href="https://bookmarks.bluecanary.dev/export/">here</a>.</div>
             </>
         }
     </div>
@@ -175,7 +174,7 @@ export default function Form() {
     if (formState > FORM_FLOW.length - 1 || formState < 0) return;
 
     const CurrentFlow = FORM_FLOW[formState]!
-    return <div class="fixed inset-1/2 -translate-1/2 w-1/2 h-1/2 flex flex-col gap-5">
+    return <div class="form-container">
         <CurrentFlow
             setCanBack={setCanBack}
             setCanContinue={setCanContinue}
@@ -184,7 +183,7 @@ export default function Form() {
             onBack={onBack}
             onNext={onNext}
         />
-        <div class="flex flex-row gap-2 justify-end">
+        <div class="flex flex-row gap-2 justify-end flex-wrap">
             <button onClick={() => onBack()} disabled={!allowBack}><ArrowLeft /> Back</button>
             <button onClick={() => onNext()} disabled={!allowNext}>Next <ArrowRight /></button>
         </div>
