@@ -7,10 +7,10 @@ type Props = Omit<ComponentProps<"input">, "class" | "className"> & {
 }
 
 export default function Input({ title, className, ...inputProps }: Props) {
-    return <div class="flex flex-col gap-2">
+    return <div class="flex flex-col gap-2 w-full">
         {title &&
-            <label class="font-bold text-xs text-text-secondary">{title}</label>
+            <label class="font-bold text-xs sm:text-sm text-text-secondary">{title}</label>
         }
-        <input {...inputProps} class={cn(className, "bg-background-secondary p-2 text-sm rounded-lg outline-none border-primary focus:border-2")}  />
+        <input {...inputProps} class={cn(className, "bg-background-secondary p-3 sm:p-2 text-sm sm:text-base rounded-lg outline-none border-transparent border-2 focus:border-primary w-full min-h-[44px]")}  />
     </div>
 }
