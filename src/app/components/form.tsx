@@ -1,10 +1,11 @@
-import { ArrowLeft, ArrowRight, Loader2 } from "lucide-preact"
-import { useCallback, useEffect, useMemo, useState } from "preact/hooks"
-import Input from "./input"
-import { Agent, CredentialSession } from "@atproto/api"
-import FilePicker from "./file-picker"
-import type { ChangeEvent } from "react-dom/src"
-import Warning from "./warning"
+import { ArrowLeft, ArrowRight, Loader2 } from "lucide-preact";
+import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
+import Input from "./input";
+import { Agent, CredentialSession } from "@atproto/api";
+import FilePicker from "./file-picker";
+import type { ChangeEvent } from "react-dom/src";
+import Warning from "./warning";
+import { DidResolver, HandleResolver } from "@atproto/identity";
 
 type AuthData = {
     username: string,
@@ -20,8 +21,10 @@ type FlowProps = {
     onNext: (force?: boolean) => void
 }
 
-const session = new CredentialSession(new URL("https://bsky.social"))
-const agent = new Agent(session)
+const didres = new DidResolver({});
+const hdlres = new HandleResolver({});
+let session: CredentialSession;
+let agent: Agent;
 
 function Login({ setCanContinue, setAuthData }: FlowProps) {
     const [username, setUsername] = useState("")
@@ -56,6 +59,15 @@ function Login({ setCanContinue, setAuthData }: FlowProps) {
 function AuthCheck({ authData, setCanBack, onBack, onNext }: FlowProps) {
     useEffect(() => {
         const tryLogin = async () => {
+            const did = await hdlres.resolve(authData.username);
+            if (!did) {
+              alert("Could not resolve your handle! Is it correct?");
+              onBack(true);
+              return;
+            }
+            const data = await didres.resolveAtprotoData(did);
+            session = new CredentialSession(new URL(data.pds));
+            agent = new Agent(session);
             await session.login({
                 identifier: authData.username,
                 password: authData.password
@@ -104,6 +116,10 @@ function Bookmarks({ setCanBack, setCanContinue }: FlowProps) {
                 .toSorted((a, b) =>
                     new Date(a.indexed_at).getTime() - new Date(b.indexed_at).getTime()
                 )
+        if (validPosts.length === 0) {
+          alert("No valid posts found in the file!");
+          return;
+        }
         setTotal(validPosts.length)
         setImported(0)
 

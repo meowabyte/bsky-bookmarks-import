@@ -4,6 +4,7 @@
     "": {
       "dependencies": {
         "@atproto/api": "^0.16.9",
+        "@atproto/identity": "^0.4.9",
         "@fontsource-variable/inter": "^5.2.6",
         "lucide-preact": "^0.543.0",
         "preact": "^10.27.1",
@@ -25,6 +26,10 @@
 
     "@atproto/common-web": ["@atproto/common-web@0.4.3", "", { "dependencies": { "graphemer": "^1.4.0", "multiformats": "^9.9.0", "uint8arrays": "3.0.0", "zod": "^3.23.8" } }, "sha512-nRDINmSe4VycJzPo6fP/hEltBcULFxt9Kw7fQk6405FyAWZiTluYHlXOnU7GkQfeUK44OENG1qFTBcmCJ7e8pg=="],
 
+    "@atproto/crypto": ["@atproto/crypto@0.4.4", "", { "dependencies": { "@noble/curves": "^1.7.0", "@noble/hashes": "^1.6.1", "uint8arrays": "3.0.0" } }, "sha512-Yq9+crJ7WQl7sxStVpHgie5Z51R05etaK9DLWYG/7bR5T4bhdcIgF6IfklLShtZwLYdVVj+K15s0BqW9a8PSDA=="],
+
+    "@atproto/identity": ["@atproto/identity@0.4.9", "", { "dependencies": { "@atproto/common-web": "^0.4.3", "@atproto/crypto": "^0.4.4" } }, "sha512-pRYCaeaEJMZ4vQlRQYYTrF3cMiRp21n/k/pUT1o7dgKby56zuLErDmFXkbKfKWPf7SgWRgamSaNmsGLqAOD7lQ=="],
+
     "@atproto/lexicon": ["@atproto/lexicon@0.5.1", "", { "dependencies": { "@atproto/common-web": "^0.4.3", "@atproto/syntax": "^0.4.1", "iso-datestring-validator": "^2.2.2", "multiformats": "^9.9.0", "zod": "^3.23.8" } }, "sha512-y8AEtYmfgVl4fqFxqXAeGvhesiGkxiy3CWoJIfsFDDdTlZUC8DFnZrYhcqkIop3OlCkkljvpSJi1hbeC1tbi8A=="],
 
     "@atproto/syntax": ["@atproto/syntax@0.4.1", "", {}, "sha512-CJdImtLAiFO+0z3BWTtxwk6aY5w4t8orHTMVJgkf++QRJWTxPbIFko/0hrkADB7n2EruDxDSeAgfUGehpH6ngw=="],
@@ -44,6 +49,10 @@
     "@minify-html/node-linux-x64": ["@minify-html/node-linux-x64@0.16.4", "", { "os": "linux", "cpu": "x64" }, "sha512-MS/gF1gxJoeHqEGcb1xoUIRv6gVin4cGJszgHPYSikzkK8Yg0p6rVOZdDAE4AAnp/NW0DYNq7fwYgw3igmppFw=="],
 
     "@minify-html/node-win32-x64": ["@minify-html/node-win32-x64@0.16.4", "", { "os": "win32", "cpu": "x64" }, "sha512-SCY7hzIqG1RclU0QzU2MlGtPOujPu6dvaPYqDvhAHpkvRXtX0hnyOrrfqf7GcBdDbASxV8LDlBWpY46JO2cjAA=="],
+
+    "@noble/curves": ["@noble/curves@1.9.7", "", { "dependencies": { "@noble/hashes": "1.8.0" } }, "sha512-gbKGcRUYIjA3/zCCNaWDciTMFI0dCkvou3TL8Zmy5Nc7sJ47a0jtOeZoTaMxkuqRo9cRhjOdZJXegxYE5FN/xw=="],
+
+    "@noble/hashes": ["@noble/hashes@1.8.0", "", {}, "sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A=="],
 
     "@types/bun": ["@types/bun@1.2.21", "", { "dependencies": { "bun-types": "1.2.21" } }, "sha512-NiDnvEqmbfQ6dmZ3EeUO577s4P5bf4HCTXtI6trMc6f6RzirY5IrF3aIookuSpyslFzrnvv2lmEWv5HyC1X79A=="],
 
