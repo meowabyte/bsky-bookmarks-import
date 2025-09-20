@@ -5,7 +5,7 @@ import { Agent, CredentialSession } from "@atproto/api";
 import FilePicker from "./file-picker";
 import type { ChangeEvent } from "react-dom/src";
 import Warning from "./warning";
-import { DidResolver, HandleResolver } from "@atproto/identity";
+import { CompositeDidDocumentResolver, CompositeHandleResolver, DohJsonHandleResolver, PlcDidDocumentResolver, WebDidDocumentResolver, WellKnownHandleResolver } from "@atcute/identity-resolver";
 
 type AuthData = {
     username: string,
@@ -21,8 +21,19 @@ type FlowProps = {
     onNext: (force?: boolean) => void
 }
 
-const didres = new DidResolver({});
-const hdlres = new HandleResolver({});
+const handleResolver = new CompositeHandleResolver({
+  strategy: 'race',
+  methods: {
+    'dns': new DohJsonHandleResolver({ dohUrl: 'https://mozilla.cloudflare-dns.com/dns-query' }),
+    'http': new WellKnownHandleResolver()
+  }
+});
+const docResolver = new CompositeDidDocumentResolver({
+  methods: {
+    plc: new PlcDidDocumentResolver(),
+    web: new WebDidDocumentResolver()
+  }
+});
 let session: CredentialSession;
 let agent: Agent;
 
@@ -59,14 +70,36 @@ function Login({ setCanContinue, setAuthData }: FlowProps) {
 function AuthCheck({ authData, setCanBack, onBack, onNext }: FlowProps) {
     useEffect(() => {
         const tryLogin = async () => {
-            const did = await hdlres.resolve(authData.username);
+            if (!authData.username || !authData.password) {
+                alert("Username or password is empty!");
+                onBack(true);
+                return;
+            }
+            const did = await handleResolver.resolve(authData.username as `${string}.${string}`);
             if (!did) {
               alert("Could not resolve your handle! Is it correct?");
               onBack(true);
               return;
             }
-            const data = await didres.resolveAtprotoData(did);
-            session = new CredentialSession(new URL(data.pds));
+            const data = await docResolver.resolve(did);
+            if (!data.service) {
+              alert("Your DID document looks invalid.");
+            }
+            let endpoint: string | undefined;
+            for (const service of data.service ?? []) {
+              if (service.type === "AtprotoPersonalDataServer") {
+                if (typeof service.serviceEndpoint === "string") {
+                  endpoint = service.serviceEndpoint;
+                  break;
+                }
+              }
+            }
+            if (!endpoint) {
+              alert("Could not find Personal Data Server in your DID document.");
+              onBack(true);
+              return;
+            }
+            session = new CredentialSession(new URL(endpoint));
             agent = new Agent(session);
             await session.login({
                 identifier: authData.username,
